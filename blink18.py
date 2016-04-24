@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Simply tries to swithc Pin 12 on for 1 sec and off for 2 secs
+#Simply tries to switch Pin 12 on for 1 sec and off for 2 secs
 #V0.2 26Aug12
 
 # Must be run as root - sudo python blink11.py 
