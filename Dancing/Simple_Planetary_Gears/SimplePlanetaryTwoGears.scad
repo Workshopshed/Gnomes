@@ -43,11 +43,7 @@ echo(str(beam));
 
 module assembly(){
     
-
-
-    
 chassis(beamthick);
-
 
     translate([0,0,1])
     rotate([0,0,0+360*R*$t])translate([(ns+np1)/pitch/2,0,0])rotate([0,0,-360*R*(1+Rp)*$t])
@@ -65,9 +61,9 @@ chassis(beamthick);
         color([1,0.5,0])
             tophat(plug,t+s+td/2,3);
     
-    translate([-beam/2,0,-1.5])
+    translate([-(beam+c)/2,0,-1.5])
         color([0,1,1])
-            mainbeam(beam,8,beamthick,4);
+            mainbeam(beam-c,8,beamthick,4);
 
 }
 
@@ -90,6 +86,13 @@ module simplebeam(width,length,height) {
             translate([0,length,0])
                cylinder(d=width,h=height);	
             };
+}
+
+//Hexagon from http://svn.clifford.at/openscad/trunk/libraries/shapes.scad
+// size is the XY plane size, height in Z
+module hexagon(size, height) {
+  boxWidth = size/1.75;
+  for (r = [-60, 0, 60]) rotate([0,0,r]) cube([boxWidth, size, height], true);
 }
 
 module crossbeam(width,length,height) {
@@ -138,7 +141,7 @@ module tophat(rad,height,hole) {
         top = 2;
         difference() {
         union () {
-            cylinder(r=rad+1,h=top);
+            hexagon(2*rad+1,top);
             translate([0,0,-height-2*c])
             cylinder(r=rad-c,h=height+2*c);	
         }
@@ -192,10 +195,11 @@ module bracket(){
     hull()
             {
                 translate([0,6,0])
-                    cylinder(h=3,r=0.2);
-                cylinder(h=3,r=0.2);
-                translate([10,6,0])
-                    cylinder(h=3,r=0.2);
+                    cylinder(h=2.5,r=0.2);
+                translate([3,0,0])
+					cylinder(h=2.5,r=0.2);
+                translate([11.6,6,0])
+                    cylinder(h=2.5,r=0.2);
             }
 }
 
@@ -203,12 +207,18 @@ module support() {
     difference() {
     union() {
     cube([8,6,12]);
-    translate([5.5,-6,0.15])
+    translate([8,-6,0.15])
         rotate([0,270,0])
             bracket();
-    translate([2.5,12,0.15])
+    translate([2.5,-6,0.15])
+        rotate([0,270,0])
+            bracket();		
+    translate([0,12,0.15])
         rotate([180,270,0])
             bracket();
+    translate([5.5,12,0.15])
+        rotate([180,270,0])
+            bracket();		
     }
     translate([4,3,3])
         scale([2,0.5,3])
