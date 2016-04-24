@@ -23,7 +23,7 @@ np1=20;// number of teeth on lower planet
 
 plug=3;
 plugGapModifier=1.2;
-
+beamthick = 1.5; 
 
 //--------- Don't edit below here unless you know what you're doing.
 
@@ -44,13 +44,14 @@ echo(str(beam));
 module assembly(){
     
 
-beamthick = 1.5; 
+
     
 chassis(beamthick);
 
-translate([0,0,1])
-rotate([0,0,0+360*R*$t])translate([(ns+np1)/pitch/2,0,0])rotate([0,0,-360*R*(1+Rp)*$t])
-	color([0,0,1])planet();
+
+    translate([0,0,1])
+    rotate([0,0,0+360*R*$t])translate([(ns+np1)/pitch/2,0,0])rotate([0,0,-360*R*(1+Rp)*$t])
+        color([0,0,1])planet();
 
         translate([0,0,1])
             rotate([0,0,180+360*R*$t])translate([(ns+np1)/pitch/2,0,0])rotate([0,0,-360*R*(1+Rp)*$t])
@@ -66,7 +67,7 @@ rotate([0,0,0+360*R*$t])translate([(ns+np1)/pitch/2,0,0])rotate([0,0,-360*R*(1+R
     
     translate([-beam/2,0,-1.5])
         color([0,1,1])
-            mainbeam(beam,8,2,beamthick);
+            mainbeam(beam,8,beamthick,4);
 
 }
 
@@ -147,8 +148,8 @@ module tophat(rad,height,hole) {
 }
 
 module pin() {
-    flat = 3-c;
-    spindle = 5-c;
+    flat = 3+c;
+    spindle = 5+c;
     intersection(){
         translate([-(flat/2),-spindle/2,0])
             cube([flat,spindle,10]);
@@ -157,6 +158,7 @@ module pin() {
 }
 
 module mainbeam(length,width,height,hole) {
+    color([1,1,0])
 	difference() {
 		//Body
 		hull(){
@@ -167,9 +169,10 @@ module mainbeam(length,width,height,hole) {
 			cylinder(d=width,h=height,center=true);	
 		};
 		//Holes
-		cylinder(d=hole+c/2,h=height*1.5,center=true,$fn=20);
-		translate([length,0,0])
-			cylinder(d=hole+c/2,h=height*1.5,center=true,$fn=20);
+        translate([0,0,-height+1])
+            cylinder(d2=hole+c+height,d1=c,h=2*height,center=true,$fn=20);
+		translate([length,0,-height+1])
+			cylinder(d2=hole+c+height,d1=c,h=2*height,center=true,$fn=20);
         //stepper motor spindle
 		translate([length/2,0,-4])
 			pin();
@@ -185,11 +188,30 @@ module baseplate(thick) {
     }
 }
 
+module bracket(){
+    hull()
+            {
+                translate([0,6,0])
+                    cylinder(h=3,r=0.2);
+                cylinder(h=3,r=0.2);
+                translate([10,6,0])
+                    cylinder(h=3,r=0.2);
+            }
+}
+
 module support() {
     difference() {
+    union() {
     cube([8,6,12]);
-    scale([2,0.2,2])
-        translate([2,15,3])
+    translate([5.5,-6,0.15])
+        rotate([0,270,0])
+            bracket();
+    translate([2.5,12,0.15])
+        rotate([180,270,0])
+            bracket();
+    }
+    translate([4,3,3])
+        scale([2,0.5,3])
             rotate(45,0,0)
                 cylinder(8,3,6,$fn=4);
     }
