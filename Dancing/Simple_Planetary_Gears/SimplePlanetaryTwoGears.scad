@@ -1,6 +1,7 @@
 include <./MCAD/involute_gears.scad>;
 
 //Dancing Gnomes
+//Based on http://www.thingiverse.com/thing:16897
 
 $fn = 80; //Circular resolution
 
