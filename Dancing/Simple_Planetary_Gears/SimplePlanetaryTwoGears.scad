@@ -7,6 +7,8 @@ $fn = 80; //Circular resolution
 
 assembly();
 
+//tophat(plug,t+s+td/2,3);
+
 d1=100;// diameter of lower ring
 t=4;// thickness of outer gears
 t2=3; // thickness of inner gears
@@ -241,12 +243,24 @@ module planet(){
 		clearance=c,
 		pressure_angle=pa);
         translate([5,-3,0])
-            support();
+			magsupport();
         translate([-13,-3,0])
-            support();
+            magsupport();
     }
 }
 
+module magsupport() {
+	difference() {
+			union(){
+            support();
+			translate([0,0,2])
+				cube([8,6,10]);
+			}
+			translate([4,3,10])
+			rotate([0,0,90])
+				cylinder(r=4.1,h=3);
+			}
+}
 
 
 module ring1() insidegear(nr1);
