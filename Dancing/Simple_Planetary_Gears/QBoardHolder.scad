@@ -7,7 +7,7 @@ module BoardHolder()
     hole=4;
     difference() {
         translate([-17,-17,0])
-            cube([34,34,5],centre=true);
+            cube([34.25,34,5],centre=true);
         //cylinder(h=5,d=diam+(wall*2)+(gap/2),$fn=200,centre=true);
         translate([0,0,1]) 
             cylinder(h=5,d=diam+(gap/2),$fn=200,centre=true);
