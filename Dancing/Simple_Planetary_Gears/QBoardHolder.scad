@@ -30,7 +30,7 @@ module MotorHolder()
         wall=1;
         cube([boardl+(2*wall)+(gap/2),boardw+(2*wall)+(gap/2),5],centre=true);
         translate([wall-(gap/4),wall-(gap/4),1]){
-            #cube([boardl+(gap/2),boardw+(gap/2),5],centre=true);
+            cube([boardl+(gap/2),boardw+(gap/2),5],centre=true);
         }
     }
 }
